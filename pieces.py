@@ -1,22 +1,23 @@
+# Author:   Max Martinez Ruts
+# Creation: 2019
+
 import numpy as np
 
-A = np.ones((3,3))
-a = (1,2)
-print(A[a])
 
 def get_val(pos, board):
     if 0 <= pos[0] < 8 and 0<=pos[1]<8:
         if board[pos] == None:
             return 0
         else:
-
             return board[pos].value
     else:
         return None
 
+
 class Pawn:
     def __init__(self, color, pos):
         self.color = color
+        self.name = 'Pawn'
         if color == 'b':
             self.value = 10.0
             self.positining_score = np.array([
@@ -42,7 +43,7 @@ class Pawn:
                 [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]]
             )*-1
         self.pos = pos
-        self.image = 'pawn'+color+'.png'
+        self.image = 'pictures/pawn'+color+'.png'
 
     def moves(self, board, pos):
         moves = []
@@ -55,14 +56,15 @@ class Pawn:
             new_board[pos] = None
             new_board[new_pos] = self
             moves.append(new_board)
-            new_pos = (pos[0] + int(self.value/10)*2, pos[1])
-            val = get_val(new_pos, board)
-            if val == 0:
-                # Move
-                new_board = np.array(list(board))
-                new_board[pos] = None
-                new_board[new_pos] = self
-                moves.append(new_board)
+            if pos[0] == 1 and self.color == 'b' or pos[0] == 6 and self.color == 'w':
+                new_pos = (pos[0] + int(self.value/10)*2, pos[1])
+                val = get_val(new_pos, board)
+                if val == 0:
+                    # Move
+                    new_board = np.array(list(board))
+                    new_board[pos] = None
+                    new_board[new_pos] = self
+                    moves.append(new_board)
 
         new_pos = (pos[0] + int(self.value/10), pos[1]+1)
         val = get_val(new_pos, board)
@@ -82,9 +84,12 @@ class Pawn:
             moves.append(new_board)
         return moves
 
+
 class Beeshop:
     def __init__(self, color, pos):
         self.color = color
+        self.name = 'Beeshop'
+
         if color == 'b':
             self.value = 30.0
             self.positining_score = np.array([
@@ -111,7 +116,7 @@ class Beeshop:
             )*-1
 
         self.pos = pos
-        self.image = 'beeshop'+color + '.png'
+        self.image = 'pictures/beeshop'+color + '.png'
 
     def moves(self, board, pos):
         moves = []
@@ -141,9 +146,12 @@ class Beeshop:
 
         return moves
 
+
 class Knight:
     def __init__(self, color, pos):
         self.color = color
+        self.name = 'Knight'
+
         if color == 'b':
             self.value = 30.0
             self.positining_score = np.array([
@@ -169,7 +177,7 @@ class Knight:
                 [-5.0, -4.0, -3.0, -3.0, -3.0, -3.0, -4.0, -5.0]]
             )*-1
         self.pos = pos
-        self.image = 'knight'+color+'.png'
+        self.image = 'pictures/knight'+color+'.png'
 
 
     def moves(self, board, pos):
@@ -187,9 +195,12 @@ class Knight:
                 # print(pos,self.color,new_pos,value,move,'knight')
         return moves
 
+
 class Rook:
     def __init__(self, color, pos):
         self.color = color
+        self.name = 'Rook'
+
         if color == 'b':
             self.value = 50.0
             self.positining_score = np.array([
@@ -216,7 +227,7 @@ class Rook:
             ) * -1
 
         self.pos = pos
-        self.image = 'rook'+color+'.png'
+        self.image = 'pictures/rook'+color+'.png'
 
     def moves(self, board, pos):
         moves = []
@@ -242,9 +253,12 @@ class Rook:
                 # print(pos, self.color, new_pos, k, value, 'rook')
         return moves
 
+
 class Queen:
     def __init__(self, color, pos):
         self.color = color
+        self.name = 'Queen'
+
         if color == 'b':
             self.value = 90.0
             self.positining_score = np.array([
@@ -270,7 +284,7 @@ class Queen:
                 [-2.0, -1.0, -1.0, -0.5, -0.5, -1.0, -1.0, -2.0]]
             )*-1
         self.pos = pos
-        self.image = 'queen'+color+'.png'
+        self.image = 'pictures/queen'+color+'.png'
 
 
     def moves(self, board, pos):
@@ -282,28 +296,28 @@ class Queen:
                 new_pos = (pos[0] + k*i, pos[1] + k*j)
                 value = get_val(new_pos, board)
                 while value == 0:
-
                     new_board = np.array(list(board))
                     new_board[pos] = None
                     new_board[new_pos] = self
                     moves.append(new_board)
-                    # print(pos,self.color,new_pos, value, 'Queen')
-
                     k+=1
                     new_pos = (pos[0] + k * i, pos[1] + k * j)
                     value = get_val(new_pos, board)
+
                 if value != None and value/self.value < 0:
                     new_board = np.array(list(board))
                     new_board[pos] = None
                     new_board[new_pos] = self
                     moves.append(new_board)
-                    # print(pos,self.color,new_pos,value, 'Queen')
 
         return moves
+
 
 class King:
     def __init__(self, color, pos):
         self.color = color
+        self.name = 'King'
+
         if color == 'b':
             self.value = 900.0
             self.positining_score = np.array([
@@ -329,7 +343,7 @@ class King:
                 [2.0, 3.0, 1.0, 0.0, 0.0, 1.0, 3.0, 2.0]]
             )*-1
         self.pos = pos
-        self.image = 'king'+color+'.png'
+        self.image = 'pictures/king'+color+'.png'
 
     def moves(self, board, pos):
         moves = []
@@ -338,10 +352,11 @@ class King:
         for move in [(1,0),(1,-1),(0,-1),(-1,-1),(-1,0),(-1,1),(0,1),(1,1)]:
             new_pos =  (move[0]+pos[0],move[1]+pos[1])
             value = get_val(new_pos, board)
+
             if value != None and value/self.value <= 0:
                 new_board = np.array(list(board))
                 new_board[pos] = None
                 new_board[new_pos] = self
                 moves.append(new_board)
-                # print(pos,self.color,new_pos,value,'king')
+
         return moves
