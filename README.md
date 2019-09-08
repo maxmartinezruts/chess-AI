@@ -3,3 +3,6 @@ Design of a chess game system with the implementation of minimax search to desig
 
 Video of game simulation: https://www.youtube.com/watch?v=jiJRSv6KRj8&t
 
+![](chess.gif)
+
+
